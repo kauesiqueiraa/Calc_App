@@ -12,7 +12,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String number = 'Numero';
+  String number = '';
 
   void calculate( String key) {
     switch (key) {
@@ -26,8 +26,21 @@ class _MyAppState extends State<MyApp> {
       case '8':
       case '9':
       case '0':
+      case ',':
         setState(() {
           number += key;
+
+          number = number.replaceAll(',', '.');
+
+          if(number.contains('.')) {
+            // double numberDouble = double.parse(number);
+            // number = numberDouble.toString();
+          }
+          else {
+            int numberInt = int.parse(number);
+            number = numberInt.toString();
+          }
+          number = number.replaceAll('.', ',');
         });
         break;
       
@@ -36,31 +49,32 @@ class _MyAppState extends State<MyApp> {
           number = '0';
         });;
         break;
-      case '<X':
-        number = '0';
-        break;
+
+      // case '<X':
+      //   number = '0';
+      //   break;
      
-      case '/':
-        number += key;
-        break;
+      // case '/':
+      //   number += key;
+      //   break;
      
-      case 'X':
-        number += key;
-        break;
+      // case 'X':
+      //   number += key;
+      //   break;
       
-      case '-':
-        number += key;
-        break;
+      // case '-':
+      //   number += key;
+      //   break;
      
-      case ',':
-        number += key;
-        break;
-      case '=':
-        number += key;
-        break;
-      case '+':
-        number += key;
-        break;
+      // case ',':
+      //   number += key;
+      //   break;
+      // case '=':
+      //   number += key;
+      //   break;
+      // case '+':
+      //   number += key;
+      //   break;
       default:
         print('Opção inválida');
     }
