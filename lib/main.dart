@@ -12,7 +12,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String number = '';
+  String number = '0';
 
   double firstNumber = 0.0;
 
@@ -54,28 +54,11 @@ class _MyAppState extends State<MyApp> {
         ;
         break;
 
-      // case '<X':
-      //   number = '0';
-      //   break;
-
-      // case '/':
-      //   number += key;
-      //   break;
-
-      // case 'X':
-      //   number += key;
-      //   break;
-
-      // case '-':
-      //   number += key;
-      //   break;
-
-      // case ',':
-      //   number += key;
-      //   break;
-
+      case '/':
+      case 'X':
+      case '-':
       case '+':
-        operation = '+';
+        operation = key;
         number = number.replaceAll(',', '.');
         firstNumber = double.parse(number);
         number = number.replaceAll('.', ',');
@@ -86,6 +69,19 @@ class _MyAppState extends State<MyApp> {
         double result = 0.0;
         if (operation == '+') {
           result = firstNumber + double.parse(number);
+        }
+        if (operation == '-') {
+          result = firstNumber - double.parse(number);
+        }
+        if (operation == 'X') {
+          result = firstNumber * double.parse(number);
+        }
+        if (operation == '/') {
+          if (double.parse(number) *1 == 0){
+            print('Erro: divisão por zero');
+            return;
+          }
+          result = firstNumber / double.parse(number);
         }
         String resultString = result.toString();
 
@@ -102,6 +98,14 @@ class _MyAppState extends State<MyApp> {
         }
         break;
 
+        case 'backspace':
+        setState(() {
+          if(number.length > 0){
+            number = number.substring(0, number.length - 1);
+          }
+        });
+        break;
+
       default:
         print('Opção inválida');
     }
@@ -116,6 +120,7 @@ class _MyAppState extends State<MyApp> {
           title: const Center(
             child: Text('Calculadora'),
           ),
+          backgroundColor: Colors.amber,
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -134,17 +139,24 @@ class _MyAppState extends State<MyApp> {
               children: [
                 GestureDetector(
                     onTap: () => calculate('AC'),
-                    child: const Text(
-                      'AC',
-                      style: TextStyle(fontSize: 48),
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: const Text(
+                        'AC',
+                        style: TextStyle(fontSize: 48),
+                      ),
                     )),
                 Text(''),
                 Text(''),
                 GestureDetector(
-                    onTap: () => calculate('<x'),
-                    child: const Text(
-                      '<x',
-                      style: TextStyle(fontSize: 48),
+                    onTap: () => calculate('backspace'),
+                    child: const Icon(
+                      Icons.backspace, 
+                      color: Colors.black,size: 48,
                     ))
               ],
             ),
